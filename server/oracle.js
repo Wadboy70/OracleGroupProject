@@ -1,7 +1,7 @@
 const oracledb = require('oracledb');
 
 try {
-    oracledb.initOracleClient({libDir: 'C:\\oracle\\instantclient'});
+    oracledb.initOracleClient({libDir: process.env.ORACLE_PATH});
 } catch (err) {
     console.error('Whoops!');
     console.error(err);
@@ -13,7 +13,9 @@ oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
 let connection;
 
 async function run(query) {
+  console.log("please print something")
   try {
+    console.log(process.env, "hello world");
     connection = await oracledb.getConnection( {
       user          : process.env.ORACLE_LOGIN,
       password      : process.env.ORACLE_PW,
