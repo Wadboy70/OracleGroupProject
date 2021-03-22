@@ -15,7 +15,7 @@ let connection;
 async function run(query) {
   try {
     connection = await oracledb.getConnection( {
-      user          : "ooluwale",
+      user          : process.env.ORACLE_LOGIN,
       password      : process.env.ORACLE_PW,
       connectString : "oracle.cise.ufl.edu:1521/orcl"
     });
