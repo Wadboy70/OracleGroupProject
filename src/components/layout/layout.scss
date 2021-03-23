@@ -1,0 +1,14 @@
+.layout {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5%;
+  height: 100vh;
+  width: 100%;
+  background: radial-gradient(white, #ffe8c7);
+
+  * {
+    font-family: "Roboto Mono", sans-serif;
+  }
+}
