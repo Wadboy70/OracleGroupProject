@@ -1,0 +1,10 @@
+.trendsPage {
+  flex-grow: 1;
+  height: 100%;
+  .trendsPage__dateBox,
+  .trendsPage__arrows {
+    margin: 0.25rem 0;
+    display: flex;
+    justify-content: space-between;
+  }
+}

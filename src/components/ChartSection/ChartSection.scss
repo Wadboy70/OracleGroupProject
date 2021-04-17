@@ -1,0 +1,11 @@
+.chartSection {
+  height: 70vh;
+  width: 100%;
+  .chartSection__chart {
+    width: inherit;
+    height: 90%;
+  }
+  .chartSection__title {
+    text-align: center;
+  }
+}
