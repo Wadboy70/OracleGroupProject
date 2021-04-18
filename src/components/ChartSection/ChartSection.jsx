@@ -20,14 +20,14 @@ const ChartSection = ({ chartData, dates }) => {
 
   useEffect(() => {
     const { start, end } = dates;
-    console.log(getYear(start));
+    //console.log(getYear(start));
     let fetchData = async () =>
       setVal(func(await sendQuery(query(getYear(start), getYear(end)))));
     fetchData();
   }, [query, setVal, func, dates]);
 
   useEffect(() => {
-    console.log(val);
+    //console.log(val);
   }, [val]);
 
   return (

@@ -15,8 +15,21 @@ const HomePage = () => {
       </ul>
       <h2>Datasets</h2>
       <ul>
-        <li>https://www.kaggle.com/rodolfofigueroa/spotify-12m-songs</li>
-        <li>https://www.kaggle.com/dhruvildave/spotify-charts</li>
+        <li>
+          <p>{"1. https://www.kaggle.com/rodolfofigueroa/spotify-12m-songs"}</p>
+          <p>
+            {"Primary dataset with approximately 1.2 million records of spotify songs, " +
+              "albums, artists, and a dozen numerical columns for song features like " +
+              "'danceability' and 'energy'."}
+          </p>
+        </li>
+        <li>
+          <p>{"2. https://www.kaggle.com/dhruvildave/spotify-charts"}</p>
+          <p>
+            {"Secondary dataset used to see which spotify song ids have been on the top 200 billboard " +
+              "charts across 70 countries in the past few decades."}
+          </p>
+        </li>
       </ul>
     </div>
   );
