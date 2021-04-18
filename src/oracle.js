@@ -161,6 +161,57 @@ export const queries = [
       "The number of songs in an alabum has smoothly flucutated over time. In the past few decades, it has been slowly decreasing, stabilizing to about 5 songs per album.",
   },
   {
+    title: "#4 Correlation between loudness/energy changed over time",
+    query: (startValue, endValue) =>
+    `SELECT s.song_year AS Year,CORR(f.loudness, f.energy) AS LoudnessEnergyCorrelation FROM song_features f JOIN song s on s.Song_ID = f.Song_ID  WHERE s.song_year > ${
+        startValue || 1900
+      } AND s.song_year < ${
+        endValue || 2021
+      }  GROUP BY s.song_year
+  ORDER BY s.song_year DESC`,
+    func: (data) => {
+        let rows3 =
+        data?.val
+            ?.map((row) => ({
+            primary: row.YEAR,
+            secondary: row.LOUDNESSENERGYCORRELATION,
+            }))
+            .reverse() || [];
+      console.log(data);
+      return [
+        {
+          label: "yuh",
+          data: rows3,
+        },
+      ];
+    },
+    axes_: [
+      {
+        primary: true,
+        type: "ordinal",
+        position: "bottom",
+        maxLabelRotation: 90,
+      },
+      { type: "linear", position: "left" },
+    ],
+    series_: { type: "line" },
+    options_: {
+      scales: {
+        xAxes: [
+          {
+            ticks: {
+              autoSkip: false,
+              maxRotation: 0,
+              minRotation: 0,
+            },
+          },
+        ],
+      },
+    },
+    desc:
+      "Aspiring artists and music hobbyists can observe that there is an increasing trend in explicit songs. It is noteably more acceptable and common for cursing to be present in songs.",
+  },
+  {
     title: "#5 Average loudness for top 200 songs and other songs over time",
     query: (startValue, endValue) =>
       `WITH billboard AS (SELECT s.release_date, AVG(f.loudness) as AvgBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID JOIN Top200billboard b ON f.Song_ID = b.Song_ID GROUP BY s.release_date ORDER BY s.release_date DESC),
@@ -288,4 +339,5 @@ export const queries = [
     desc:
       "In the past decade, there's been a sizeable increase in wordiness of songs. All songs, ESPECIALLY the top 200, have become much more focused on words.",
   },
+  
 ];

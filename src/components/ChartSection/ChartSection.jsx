@@ -35,7 +35,7 @@ const ChartSection = ({ chartData, dates }) => {
 
   const series = React.useMemo(() => series_, [series_]);
 
-  const options = React.useMemo(() => options_, options_);
+  const options = React.useMemo(() => options_, [options_]);
 
   const axes = React.useMemo(() => axes_, [axes_]);
 

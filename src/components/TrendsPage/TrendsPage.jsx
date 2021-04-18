@@ -45,10 +45,6 @@ const TrendsPage = () => {
           onChange={(e) => setDate(e.target.value, "end")}
         />
       </div>
-      <div className="description">
-        <h3>Uses for this query</h3>
-        <p>{queries[chart].desc}</p>
-      </div>
     </div>
   );
 };
