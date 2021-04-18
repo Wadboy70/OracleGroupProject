@@ -159,26 +159,20 @@ export const queries = [
       "In the past few decades, the number of tracks in an album has slowly decreased, stabilizing to about 5 songs per album today. This could be a great starting point for new artists who are unsure of how many songs to release in their first album.",
   },
   {
-<<<<<<< HEAD
-    title:
-      "Query 5: Average Loudness (Top 200 Songs & Other Songs) vs. Time (years)",
-=======
-    title: "#4 Correlation between loudness/energy changed over time",
+    title: "Query 4: Correlation btwn Loudness/Energy vs Time (years)",
     query: (startValue, endValue) =>
-    `SELECT s.song_year AS Year,CORR(f.loudness, f.energy) AS LoudnessEnergyCorrelation FROM song_features f JOIN song s on s.Song_ID = f.Song_ID  WHERE s.song_year > ${
+      `SELECT s.song_year AS Year,CORR(f.loudness, f.energy) AS LoudnessEnergyCorrelation FROM song_features f JOIN song s on s.Song_ID = f.Song_ID  WHERE s.song_year > ${
         startValue || 1900
-      } AND s.song_year < ${
-        endValue || 2021
-      }  GROUP BY s.song_year
+      } AND s.song_year < ${endValue || 2021}  GROUP BY s.song_year
   ORDER BY s.song_year DESC`,
     func: (data) => {
-        let rows3 =
+      let rows3 =
         data?.val
-            ?.map((row) => ({
+          ?.map((row) => ({
             primary: row.YEAR,
             secondary: row.LOUDNESSENERGYCORRELATION,
-            }))
-            .reverse() || [];
+          }))
+          .reverse() || [];
       console.log(data);
       return [
         {
@@ -211,11 +205,11 @@ export const queries = [
       },
     },
     desc:
-      "Aspiring artists and music hobbyists can observe that there is an increasing trend in explicit songs. It is noteably more acceptable and common for cursing to be present in songs.",
+      "Overtime, the correlation between loudness and energy has stabilized around 0.8, indicating there is a strong linear relationship between the two values. Artists should note that if they want a higher energy song, to have a high loudness factor, and vice versa.",
   },
   {
-    title: "#5 Average loudness for top 200 songs and other songs over time",
->>>>>>> 95d312b8490323ac9884cf143b909a72c04291df
+    title:
+      "Query 5: Average Loudness (Top 200 Songs & Other Songs) vs. Time (years)",
     query: (startValue, endValue) =>
       `WITH billboard AS (SELECT s.release_date, AVG(f.loudness) as AvgBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID JOIN Top200billboard b ON f.Song_ID = b.Song_ID GROUP BY s.release_date ORDER BY s.release_date DESC),
         nonBillboard AS ( SELECT s.release_date, AVG(f.loudness) AS AvgNonBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID WHERE f.song_id NOT IN (SELECT Song_ID from Top200billboard) GROUP BY s.release_date ORDER BY s.release_date DESC)
@@ -343,5 +337,4 @@ export const queries = [
     desc:
       "In the past decade, there's been a sizeable increase in wordiness of songs. All songs, especially the top 200, have become much more focused on words. Artists looking to create popular songs should consider increasing the number of written lyrics.",
   },
-  
 ];
