@@ -5,32 +5,9 @@ import "./ChartSection.scss";
 
 const ChartSection = ({ chartData, dates }) => {
   const { title, query, func, axes_, series_, options_ } = chartData;
-  const [val, setVal] = useState([
-    {
-      label: "Series 1",
-      data: [
-        { primary: 1, secondary: 10 },
-        { primary: 2, secondary: 12 },
-        { primary: 3, secondary: 10 },
-      ],
-    },
-    {
-      label: "Series 2",
-      data: [
-        { primary: 1, secondary: 10 },
-        { primary: 2, secondary: 15 },
-        { primary: 3, secondary: 10 },
-      ],
-    },
-    {
-      label: "Series 3",
-      data: [
-        { primary: 1, secondary: 10 },
-        { primary: 2, secondary: 17 },
-        { primary: 3, secondary: 10 },
-      ],
-    },
-  ]);
+
+  const [val, setVal] = useState([]);
+
   const data = React.useMemo(() => val, [val]);
 
   const series = React.useMemo(() => series_, [series_]);
