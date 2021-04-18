@@ -3,31 +3,28 @@ import { queries } from "../../oracle";
 import ChartSection from "../ChartSection/ChartSection";
 import "./TrendsPage.scss";
 
-let date = new Date();
-
-let day = date.getDate(),
-  month = date.getMonth() + 1,
-  year = date.getFullYear();
-month = month < 10 ? "0" + month : month;
-day = day < 10 ? "0" + day : day;
-
-let today = year + "-" + month + "-" + day;
-
 const TrendsPage = () => {
   const [chart, setChart] = useState(0);
   const [dates, setDates] = useState({
-    start: "1964-01-01",
+    start: "1900-01-01",
     end: new Date().toISOString().match(/[-0-9]{10}/)[0],
   });
+
+  const handleResetDate = () => {
+    setDates({
+      start: "1900-01-01",
+      end: new Date().toISOString().match(/[-0-9]{10}/)[0],
+    })
+  }
 
   const left = () => setChart(chart === 0 ? queries.length - 1 : chart - 1);
   const right = () => setChart(chart === queries.length - 1 ? 0 : chart + 1);
 
   const setDate = (val, which) => setDates({ ...dates, [which]: val });
 
-  useEffect(() => {
-    console.log(dates);
-  }, [dates]);
+  useEffect(()=>{
+    handleResetDate();
+  },[chart])
 
   return (
     <div className="trendsPage">
@@ -40,11 +37,11 @@ const TrendsPage = () => {
         <input
           type="date"
           onChange={(e) => setDate(e.target.value, "start")}
-          defaultValue="1964-01-01"
+          value = {dates.start}
         />
         <input
           type="date"
-          defaultValue={today}
+          value = {dates.end}
           onChange={(e) => setDate(e.target.value, "end")}
         />
       </div>
