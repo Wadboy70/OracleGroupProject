@@ -4,7 +4,7 @@ import { sendQuery } from '../../oracle';
 import './ChartSection.scss';
 
 const ChartSection = ({ chartData, dates }) => {
-  const {title, query, func, axes_} = chartData;
+  const {title, query, func, axes_, series_} = chartData;
   const [val, setVal] = useState([
     {
       label: 'Series 1',
@@ -37,10 +37,10 @@ const ChartSection = ({ chartData, dates }) => {
   );
   
   const series = React.useMemo(
-      () => ({
+      () => (series_ || {
       type: "bar"
       }),
-      []
+      [series_]
   );
 
   const axes = React.useMemo(
