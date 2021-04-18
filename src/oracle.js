@@ -49,7 +49,6 @@ export const queries = [
       scales: {
         xAxes: [
           {
-            scaleLabel: { display: true, labelString: "X text" },
             ticks: {
               autoSkip: false,
               maxRotation: 0,
