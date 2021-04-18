@@ -12,7 +12,7 @@ export const sendQuery = (val, e) => {
 
 export const queries = [
   {
-    title: "Query #1 Percentage of Explicit Tracks over the years",
+    title: "Query 1: % Explicit Tracks vs. Time (years)",
     query: (startValue, endValue) =>
       `WITH explicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumExplicit  FROM SONG_FEATURES f  JOIN SONG s ON f.Song_ID = s.Song_ID  WHERE f.EXPLICIT = 'True'  GROUP BY s.SONG_YEAR ), notExplicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumNotExplicit  FROM SONG_FEATURES f  JOIN SONG s on f.Song_ID = s.SONG_ID  WHERE f.EXPLICIT = 'False'  GROUP BY s.SONG_YEAR ) SELECT  e.SONG_YEAR,  e.NumExplicit,  ne.NumNotExplicit,  ROUND(e.NumExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentExplicit,  ROUND(ne.NumNotExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentNotExplicit FROM explicit e JOIN notExplicit ne on ne.SONG_YEAR = e.SONG_YEAR where e.SONG_YEAR < ${
         endValue || 2021
@@ -27,7 +27,7 @@ export const queries = [
             secondary: row.PERCENTEXPLICIT,
           }))
           .reverse() || [];
-      console.log(rows);
+      //console.log(rows);
       return [
         {
           label: "yuh",
@@ -59,10 +59,10 @@ export const queries = [
       },
     },
     desc:
-      "Aspiring artists and music hobbyists can observe that there is an increasing trend in explicit songs. It is noteably more acceptable and common for cursing to be present in songs.",
+      "If artists are considering explicit words as a part of their brand, but are worried of any kickback, they can see that is noteably more acceptable and common for cursing to be present in songs nowadays.",
   },
   {
-    title: "Query #2 Average artist career timespan overtime",
+    title: "Query 2: Average Artist Career Length vs Time (years)",
     query: (startValue, endValue) =>
       `WITH careerLength AS ( SELECT  artist_id,  MIN(s.song_year) AS startYear,  MAX(s.song_year) AS endYear,  MAX(s.song_year) - MIN(s.song_year) + 1 AS careerLength FROM relationship_song_artist r JOIN song s ON r.song_id = s.song_id GROUP BY r.artist_id)SELECT startYear, AVG(careerLength)FROM careerLength WHERE startYear > ${
         startValue || 1964
@@ -107,11 +107,10 @@ export const queries = [
       },
     },
     desc:
-      "There is a clear decrease in artist career span over time. Meaning, on average, new artists are only active for a year or so.",
+      "There is a clear decrease in artist career span over time. Meaning, on average, new artists are only active for a year or so. This is likely due to how easy it is to produce and post music nowadays, and how songs are created as an attempt to be 'trendy' and explode in popularity.",
   },
   {
-    title:
-      "Query #3 How has the average number of tracks per album changed over time",
+    title: "Query 3: Average # Tracks Per Album vs. Time (years)",
     query: (startValue, endValue) =>
       `WITH dates AS ( SELECT r.album_id,r.track_number,SUBSTR(s.release_date, 0, LENGTH(s.release_date) - 3) AS trimmedDate FROM relationship_song_album r JOIN song s ON s.song_id = r.song_id  ), albumStats AS ( SELECT album_id,MAX(track_number) AS NumTracks,MAX(trimmedDate) AS AlbumDate FROM dates GROUP BY album_id  )  SELECT AlbumDate, AVG(NumTracks)  FROM albumStats  WHERE SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3)> ${
         startValue || 1925
@@ -126,8 +125,7 @@ export const queries = [
             secondary: row["AVG(NUMTRACKS)"],
           }))
           .reverse() || [];
-      console.log(data);
-
+      //console.log(data);
       return [
         {
           label: "yuh",
@@ -158,11 +156,11 @@ export const queries = [
       },
     },
     desc:
-      "The number of songs in an alabum has smoothly flucutated over time. In the past few decades, it has been slowly decreasing, stabilizing to about 5 songs per album.",
+      "In the past few decades, the number of tracks in an album has slowly decreased, stabilizing to about 5 songs per album today. This could be a great starting point for new artists who are unsure of how many songs to release in their first album.",
   },
   {
     title:
-      "Query #5 Average loudness for top 200 songs and other songs over time",
+      "Query 5: Average Loudness (Top 200 Songs & Other Songs) vs. Time (years)",
     query: (startValue, endValue) =>
       `WITH billboard AS (SELECT s.release_date, AVG(f.loudness) as AvgBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID JOIN Top200billboard b ON f.Song_ID = b.Song_ID GROUP BY s.release_date ORDER BY s.release_date DESC),
         nonBillboard AS ( SELECT s.release_date, AVG(f.loudness) AS AvgNonBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID WHERE f.song_id NOT IN (SELECT Song_ID from Top200billboard) GROUP BY s.release_date ORDER BY s.release_date DESC)
@@ -187,8 +185,8 @@ export const queries = [
             secondary: row.AVGNONBILLBOARDLOUDNESS,
           }))
           .reverse() || [];
-      console.log(rows1);
-      console.log(rows2);
+      //console.log(rows1);
+      //console.log(rows2);
       return [
         {
           label: "Top 200 Songs",
@@ -223,11 +221,11 @@ export const queries = [
       },
     },
     desc:
-      "Interestingly, top 200 songs have consistently been louder than other songs. Aspiring artists should consider increasing the volume level of their songs to have successful tracks.",
+      "Interestingly, top 200 songs have consistently been louder than other songs. Artists aiming to create popular songs should consider increasing loudness during music recording and editing.",
   },
   {
     title:
-      "Query #6 Average wordiness for top 200 songs and other songs over time",
+      "Query 6: Average Wordiness (Top 200 songs & Other Songs) vs. Time (years)",
     query: (startValue, endValue) =>
       `WITH billboard AS (SELECT s.release_date, AVG(f.speechiness) as AvgBillboardSpeechiness FROM song_features f JOIN song s on s.Song_ID = f.song_ID JOIN Top200billboard b ON f.Song_ID = b.Song_ID GROUP BY s.release_date ORDER BY s.release_date DESC),
         nonBillboard AS ( SELECT s.release_date, AVG(f.speechiness) AS AvgNonBillboardSpeechiness FROM song_features f JOIN song s on s.Song_ID = f.song_ID WHERE f.song_id NOT IN (SELECT Song_ID from Top200billboard) GROUP BY s.release_date ORDER BY s.release_date DESC)
@@ -252,8 +250,8 @@ export const queries = [
             secondary: row.AVGNONBILLBOARDSPEECHINESS,
           }))
           .reverse() || [];
-      console.log(rows1);
-      console.log(rows2);
+      //console.log(rows1);
+      //console.log(rows2);
       return [
         {
           label: "Top 200 Songs",
@@ -288,6 +286,6 @@ export const queries = [
       },
     },
     desc:
-      "In the past decade, there's been a sizeable increase in wordiness of songs. All songs, ESPECIALLY the top 200, have become much more focused on words.",
+      "In the past decade, there's been a sizeable increase in wordiness of songs. All songs, especially the top 200, have become much more focused on words. Artists looking to create popular songs should consider increasing the number of written lyrics.",
   },
 ];
