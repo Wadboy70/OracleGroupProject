@@ -60,6 +60,50 @@ export const queries = [
     },
   },
   {
+      title: "#2 Average artist career timespan overtime",
+      query: (startValue, endValue) => `WITH careerLength AS ( SELECT  artist_id,  MIN(s.song_year) AS startYear,  MAX(s.song_year) AS endYear,  MAX(s.song_year) - MIN(s.song_year) + 1 AS careerLength FROM relationship_song_artist r JOIN song s ON r.song_id = s.song_id GROUP BY r.artist_id)SELECT startYear, AVG(careerLength)FROM careerLength WHERE startYear > ${startValue || 1964} AND startYear < ${endValue || 2021} GROUP BY startYear ORDER BY startYear DESC`,
+      func: data => {
+          let rows = data?.val?.map(row => ({primary: row.STARTYEAR, secondary: row["AVG(CAREERLENGTH)"]})).reverse() || [];
+          return(
+              [
+                  {
+                      label: "yuh",
+                      data: rows
+                  }
+              ]
+          )
+      },
+      axes_: [
+          { primary: true, type: 'ordinal', position: 'bottom', maxLabelRotation: 90 },
+          { type: 'linear', position: 'left'},
+      ],
+      series_: {type: "line"}
+
+  },
+  {
+      title: "#3 How has the average number of tracks per album changed over time",
+      query: (startValue, endValue) => `WITH dates AS ( SELECT r.album_id,r.track_number,SUBSTR(s.release_date, 0, LENGTH(s.release_date) - 3) AS trimmedDate FROM relationship_song_album r JOIN song s ON s.song_id = r.song_id  ), albumStats AS ( SELECT album_id,MAX(track_number) AS NumTracks,MAX(trimmedDate) AS AlbumDate FROM dates GROUP BY album_id  )  SELECT AlbumDate, AVG(NumTracks)  FROM albumStats  WHERE SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3)> ${startValue || 1925} AND SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3) < ${endValue || 2021}  GROUP BY AlbumDate  ORDER BY AlbumDate desc`,
+      func: data => {
+          let rows = data?.val?.map(row => ({primary: row.ALBUMDATE, secondary: row["AVG(NUMTRACKS)"]})).reverse() || [];
+          console.log(data)
+
+          return(
+              [
+                  {
+                      label: "yuh",
+                      data: rows
+                  }
+              ]
+          )
+      },
+      axes_: [
+          { primary: true, type: 'ordinal', position: 'bottom', maxLabelRotation: 90 },
+          { type: 'linear', position: 'left'},
+      ],
+      series_: {type: "line"}
+
+  },
+  {
     title: "#5 Average loudness for top 200 songs and other songs over time",
     query: (startValue, endValue) =>
       `WITH billboard AS (SELECT s.release_date, AVG(f.loudness) as AvgBillboardLoudness FROM song_features f JOIN song s on s.Song_ID = f.song_ID JOIN Top200billboard b ON f.Song_ID = b.Song_ID GROUP BY s.release_date ORDER BY s.release_date DESC),
@@ -68,7 +112,7 @@ export const queries = [
         WHERE TO_NUMBER(SUBSTR(b.release_date, 0, LENGTH(b.release_date) - 6)) < ${
           endValue || 2021
         } AND TO_NUMBER(SUBSTR(b.release_date, 0, LENGTH(b.release_date) - 6)) > ${
-        startValue || 1964
+        startValue || 1900
       }`,
     func: (data) => {
       let rows1 =
@@ -131,7 +175,7 @@ export const queries = [
         WHERE TO_NUMBER(SUBSTR(b.release_date, 0, LENGTH(b.release_date) - 6)) < ${
           endValue || 2021
         } AND TO_NUMBER(SUBSTR(b.release_date, 0, LENGTH(b.release_date) - 6)) > ${
-        startValue || 1964
+        startValue || 1900
       }`,
     func: (data) => {
       let rows1 =
