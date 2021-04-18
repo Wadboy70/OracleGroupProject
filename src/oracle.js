@@ -113,7 +113,7 @@ export const queries = [
     title:
       "#3 How has the average number of tracks per album changed over time",
     query: (startValue, endValue) =>
-      `WITH dates AS ( SELECT r.album_id,r.track_number,SUBSTR(s.release_date, 0, LENGTH(s.release_date) - 3) AS trimmedDate FROM relationship_song_album r JOIN song s ON s.song_id = r.song_id  ), albumStats AS ( SELECT album_id,MAX(track_number) AS NumTracks,MAX(trimmedDate) AS AlbumDate FROM dates GROUP BY album_id  )  SELECT SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3), AVG(NumTracks)  FROM albumStats  WHERE SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3)> ${
+      `WITH dates AS ( SELECT r.album_id,r.track_number,SUBSTR(s.release_date, 0, LENGTH(s.release_date) - 3) AS trimmedDate FROM relationship_song_album r JOIN song s ON s.song_id = r.song_id  ), albumStats AS ( SELECT album_id,MAX(track_number) AS NumTracks,MAX(trimmedDate) AS AlbumDate FROM dates GROUP BY album_id  )  SELECT AlbumDate, AVG(NumTracks)  FROM albumStats  WHERE SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3)> ${
         startValue || 1925
       } AND SUBSTR(AlbumDate, 0, LENGTH(AlbumDate) - 3) < ${
         endValue || 2021
@@ -122,7 +122,7 @@ export const queries = [
       let rows =
         data?.val
           ?.map((row) => ({
-            primary: row.ALBUMDATE,
+            primary: row.ALBUMDATE.substring(0, 4),
             secondary: row["AVG(NUMTRACKS)"],
           }))
           .reverse() || [];
@@ -286,6 +286,6 @@ export const queries = [
       },
     },
     desc:
-      "In the past deacde, there's been a sizeable increase in wordiness of songs. All songs, ESPECIALLY the top 200, have become much more focused on words.",
+      "In the past decade, there's been a sizeable increase in wordiness of songs. All songs, ESPECIALLY the top 200, have become much more focused on words.",
   },
 ];
