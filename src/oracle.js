@@ -58,6 +58,8 @@ export const queries = [
         ],
       },
     },
+    desc:
+      "Aspiring artists and music hobbyists can observe that there is an increasing trend in explicit songs. It is noteably more acceptable and common for cursing to be present in songs.",
   },
   {
     title: "#5 Average loudness for top 200 songs and other songs over time",
@@ -103,7 +105,6 @@ export const queries = [
         primary: true,
         type: "ordinal",
         position: "bottom",
-        maxLabelRotation: 90,
       },
       { type: "linear", position: "left" },
     ],
@@ -121,6 +122,8 @@ export const queries = [
         ],
       },
     },
+    desc:
+      "Interestingly, top 200 songs have consistently been louder than other songs. Aspiring artists should consider increasing the volume level of their songs to have successful tracks.",
   },
   {
     title: "#6 Average wordiness for top 200 songs and other songs over time",
@@ -166,7 +169,6 @@ export const queries = [
         primary: true,
         type: "ordinal",
         position: "bottom",
-        maxLabelRotation: 90,
       },
       { type: "linear", position: "left" },
     ],
@@ -184,5 +186,7 @@ export const queries = [
         ],
       },
     },
+    desc:
+      "In the past deacde, there's been a sizeable increase in wordiness of songs. All songs, ESPECIALLY the top 200, have become much more focused on words.",
   },
 ];
