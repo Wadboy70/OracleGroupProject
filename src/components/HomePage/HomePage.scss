@@ -1,3 +1,7 @@
+h1 {
+  text-align: center;
+}
+
 .homepage {
   box-sizing: border-box;
   display: flex;
@@ -6,7 +10,6 @@
   height: 120vh;
   width: 100vw;
   background: radial-gradient(white, #ffe8c7);
-
   * {
     font-family: "Roboto Mono", sans-serif;
   }

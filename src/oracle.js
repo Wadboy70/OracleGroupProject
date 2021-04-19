@@ -14,7 +14,7 @@ export const queries = [
   {
     title: "Query 1: % Explicit Tracks vs. Time (years)",
     query: (startValue, endValue) =>
-      `WITH explicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumExplicit  FROM SONG_FEATURES f  JOIN SONG s ON f.Song_ID = s.Song_ID  WHERE f.EXPLICIT = 'True'  GROUP BY s.SONG_YEAR ), notExplicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumNotExplicit  FROM SONG_FEATURES f  JOIN SONG s on f.Song_ID = s.SONG_ID  WHERE f.EXPLICIT = 'False'  GROUP BY s.SONG_YEAR ) SELECT  e.SONG_YEAR,  e.NumExplicit,  ne.NumNotExplicit,  ROUND(e.NumExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentExplicit,  ROUND(ne.NumNotExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentNotExplicit FROM explicit e JOIN notExplicit ne on ne.SONG_YEAR = e.SONG_YEAR where e.SONG_YEAR < ${
+      `WITH explicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumExplicit  FROM SONG_FEATURES f  JOIN SONG s ON f.Song_ID = s.Song_ID  WHERE f.EXPLICIT = 'True'  GROUP BY s.SONG_YEAR ), notExplicit AS (  SELECT  s.SONG_YEAR,  COUNT(f.EXPLICIT) as NumNotExplicit  FROM SONG_FEATURES f  JOIN SONG s on f.Song_ID = s.SONG_ID  WHERE f.EXPLICIT = 'False'  GROUP BY s.SONG_YEAR ) SELECT  e.SONG_YEAR,  ROUND(e.NumExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentExplicit,  ROUND(ne.NumNotExplicit/(e.NumExplicit+ne.NumNotExplicit), 6) as PercentNotExplicit FROM explicit e JOIN notExplicit ne on ne.SONG_YEAR = e.SONG_YEAR where e.SONG_YEAR < ${
         endValue || 2021
       } and e.SONG_YEAR > ${
         startValue || 1964
@@ -64,7 +64,7 @@ export const queries = [
   {
     title: "Query 2: Average Artist Career Length vs Time (years)",
     query: (startValue, endValue) =>
-      `WITH careerLength AS ( SELECT  artist_id,  MIN(s.song_year) AS startYear,  MAX(s.song_year) AS endYear,  MAX(s.song_year) - MIN(s.song_year) + 1 AS careerLength FROM relationship_song_artist r JOIN song s ON r.song_id = s.song_id GROUP BY r.artist_id)SELECT startYear, AVG(careerLength)FROM careerLength WHERE startYear > ${
+      `WITH careerLength AS ( SELECT  artist_id,  MIN(s.song_year) AS startYear,  MAX(s.song_year) - MIN(s.song_year) + 1 AS careerLength FROM relationship_song_artist r JOIN song s ON r.song_id = s.song_id GROUP BY r.artist_id)SELECT startYear, AVG(careerLength)FROM careerLength WHERE startYear > ${
         startValue || 1964
       } AND startYear < ${
         endValue || 2021
@@ -107,7 +107,7 @@ export const queries = [
       },
     },
     desc:
-      "There is a clear decrease in artist career span over time. Meaning, on average, new artists are only active for a year or so. This is likely due to how easy it is to produce and post music nowadays, and how songs are created as an attempt to be 'trendy' and explode in popularity.",
+      "There is a clear decrease in artist career span over time. Meaning, on average, new artists are only active for a year or so. This is likely due to how easy it is to produce and post music nowadays, and how songs are created as an attempt to be 'trendy' and explode in popularity. From the perspective of a record label, they may prioritize bringing in multiple artists, instead of investing heavily into a select few, due to the quick turn around times on careers",
   },
   {
     title: "Query 3: Average # Tracks Per Album vs. Time (years)",
